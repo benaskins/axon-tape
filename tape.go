@@ -16,7 +16,7 @@ import "bytes"
 // FilterAction is returned by StreamFilter.Write and Flush to signal what happened.
 // The filter handles ContinueAction and TransformAction internally. Only actions
 // that require a consumer decision (KillAction, domain-specific actions) surface.
-type FilterAction interface{ filterAction() }
+type FilterAction interface{ IsFilterAction() }
 
 // ContinueAction signals that nothing requires consumer attention.
 type ContinueAction struct{}
@@ -28,9 +28,9 @@ type TransformAction struct{ Text string }
 // KillAction signals that the stream should be terminated.
 type KillAction struct{ Reason string }
 
-func (ContinueAction) filterAction()   {}
-func (TransformAction) filterAction()  {}
-func (KillAction) filterAction()       {}
+func (ContinueAction) IsFilterAction()   {}
+func (TransformAction) IsFilterAction()  {}
+func (KillAction) IsFilterAction()       {}
 
 // --- Matcher interface ---
 
